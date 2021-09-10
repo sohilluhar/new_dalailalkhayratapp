@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dalailalkhayratapp/Widgets/book_list.dart';
+import 'package:dalailalkhayratapp/Widgets/gridscroll.dart';
 import 'package:dalailalkhayratapp/Widgets/customAppbar.dart';
 
 import 'package:dalailalkhayratapp/Widgets/read_card.dart';
@@ -19,6 +19,7 @@ import '../BookMark.dart';
 import '../setting.dart';
 import 'bookmark.dart';
 import 'index.dart';
+import 'index.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -26,93 +27,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: CustomAppBar(
-  //       title: "Dalailal Khaiyrat",
-  //       showBack: false,
-  //       actions: [
-  //         IconButton(
-  //           icon: Icon(Icons.bookmark),
-  //           onPressed: () {
-  //             print("bookmark");
-  //             Navigator.push(
-  //               context,
-  //               MaterialPageRoute(builder: (context) => BookMarkUI()),
-  //             );
-  //           },
-  //         ),
-  //         IconButton(
-  //           icon: Icon(Icons.settings),
-  //           onPressed: () {
-  //             print("Setting");
-  //             Navigator.push(
-  //               context,
-  //               MaterialPageRoute(builder: (context) => Settings()),
-  //             );
-  //           },
-  //         ),
-  //       ],
-  //     ),
-  //     body: SafeArea(
-  //       child: SingleChildScrollView(
-  //         physics: BouncingScrollPhysics(),
-  //         child: Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-  //           child: Column(
-  //             mainAxisAlignment: MainAxisAlignment.start,
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               TextHeading(context, "Today"),
-  //               SizedBox(
-  //                 height: 20,
-  //               ),
-  //               Row(
-  //                 children: [
-  //                   Container(
-  //                     width: MediaQuery.of(context).size.width * 0.42,
-  //                     child: RoundedButton(
-  //                       text: "Monday",
-  //                       press: () {
-  //                         print("Monday");
-  //                       },
-  //                     ),
-  //                   ),
-  //                   SizedBox(
-  //                     width: MediaQuery.of(context).size.width * 0.05,
-  //                   ),
-  //                   Container(
-  //                     width: MediaQuery.of(context).size.width * 0.42,
-  //                     child: RoundedButton(
-  //                       text: "Resume",
-  //                       press: () {
-  //                         print("Resume");
-  //                         loadFile(resumebook);
-  //                       },
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //               TextHeading(context, "Week Day"),
-  //               SizedBox(
-  //                 height: 20,
-  //               ),
-  //               for (String key in pdfbook.keys)
-  //                 RoundedButton(
-  //                   text: key,
-  //                   press: () {
-  //                     loadFile(key);
-  //                   },
-  //                 ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-  //
   void loadFile(var bookkey) async {
     var con;
     var filename = pdfbook[bookkey];
@@ -129,7 +43,11 @@ class _HomeState extends State<Home> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => PDFScreen(path: f.path, resumeco: con,keyPDF: bookkey,)),
+            builder: (context) => PDFScreen(
+                  path: f.path,
+                  resumeco: con,
+                  keyPDF: bookkey,
+                )),
       ).then(refreshScreen);
     });
   }
@@ -163,7 +81,19 @@ class _HomeState extends State<Home> {
         showBack: false,
         actions: [
           IconButton(
+            icon: Icon(Icons.format_list_bulleted),
+            tooltip: "Index",
+            onPressed: () {
+              print("index");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => IndexList()),
+              );
+            },
+          ),
+          IconButton(
             icon: Icon(Icons.bookmark),
+            tooltip: "Bookmark List",
             onPressed: () {
               print("bookmark");
               Navigator.push(
@@ -174,6 +104,7 @@ class _HomeState extends State<Home> {
           ),
           IconButton(
             icon: Icon(Icons.settings),
+            tooltip: "Setting",
             onPressed: () {
               print("Setting");
               Navigator.push(
@@ -196,14 +127,26 @@ class _HomeState extends State<Home> {
               CardRead(
                   day: today_name,
                   chapter: pdfChapterName[today_name],
-                  pages: pdfbookCount[today_name]!+" Pages",
+                  pages: pdfbookCount[today_name]! + " Pages",
                   press: () {
-                                        loadFile(today_name);
+                    loadFile(today_name);
                   }),
-              TextHeading("Continue", "Reading"),
-              continueReading(size,resumebook ,pdfChapterName[resumebook],pdfbookCount[resumebook]),
-              TextHeading("", "Index"),
-              indexReading(size,"Index" ,pdfChapterName['Index'],pdfbookCount['Index']),
+              TextHeading("Resume", "Reading"),
+              continueReading(size, resumebook, pdfChapterName[resumebook],
+                  pdfbookCount[resumebook]),
+              TextHeading("View", "Index"),
+              CardRead(
+                  day: pdfChapterName['Index'],
+                  chapter: "View all chapters",
+                  buttontext: "View Index",
+                  pages: pdfbookCount['Index']! + " Chapters",
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => IndexList()),
+                    );
+                  }),
+
               // TextHeading("Weekday", "Index"),
               // IndexScroll(),
               TextHeading("Daily", "Reading"),
@@ -232,19 +175,15 @@ class _HomeState extends State<Home> {
         margin: EdgeInsets.symmetric(vertical: 15),
         child: Row(
           children: <Widget>[
-
-            for(var key in pdfweekbook.keys)
+            for (var key in pdfweekbook.keys)
               ReadingListCard(
-              image: "assets/image/0.jpg",
-              title:key,
-              page: pdfbookCount[key]!+" Pages",
-              pressRead: () {
-
-                loadFile(key);
-              },
-            ),
-
-
+                image: "assets/image/0.jpg",
+                title: key,
+                page: pdfbookCount[key]! + " Pages",
+                pressRead: () {
+                  loadFile(key);
+                },
+              ),
           ],
         ),
       ),
@@ -292,181 +231,114 @@ class _HomeState extends State<Home> {
         margin: EdgeInsets.symmetric(vertical: 15),
         child: Row(
           children: <Widget>[
-
-            for(var key in pdfOtherbook.keys)
+            for (var key in pdfOtherbook.keys)
               ReadingListCard(
-              image: "assets/image/0.jpg",
-              title:key,
-              page: pdfbookCount[key]!+" Pages",
-              pressRead: () {
-
-                loadFile(key);
-              },
-            ),
-
-
+                image: "assets/image/0.jpg",
+                title: key,
+                page: pdfbookCount[key]! + " Pages",
+                pressRead: () {
+                  loadFile(key);
+                },
+              ),
           ],
         ),
       ),
     );
   }
 
-  GestureDetector continueReading(Size size,String? day_name,String? chapter_name,String? total) {
-
+  GestureDetector continueReading(
+      Size size, String? day_name, String? chapter_name, String? total) {
     var resume;
     if (resumebook != day_name)
       resume = 0;
     else
       resume = resumecount;
 
-    return
-      GestureDetector(
-        onTap: (){
-
+    return GestureDetector(
+        onTap: () {
           loadFile(day_name);
         },
-    child:
-      Container(
-
-      margin: EdgeInsets.symmetric(vertical: 15),
-      height: 100,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(29),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 10),
-            blurRadius: 33,
-            color: Color(0xFFD3D3D3).withOpacity(.84),
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 15),
+          height: 81,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(9),
+            // boxShadow: [
+            //   BoxShadow(
+            //     offset: Offset(0, 10),
+            //     blurRadius: 33,
+            //     color: Color(0xFFD3D3D3).withOpacity(.84),
+            //   ),
+            // ],
           ),
-        ],
-      ),
-      child: ClipRRect(
-
-        borderRadius: BorderRadius.circular(29),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(left: 24, right: 24, top: 24),
-                child: Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        day_name!,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: kPrimaryColor,
-                          fontSize: MediaQuery.of(context).size.width * 0.04,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(9),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                    child: Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
                           Text(
-                            chapter_name!,
+                            day_name!,
                             style: TextStyle(
-                              color: kSecondaryColor,
+                              fontWeight: FontWeight.bold,
+                              color: kPrimaryColor,
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.04,
                             ),
                           ),
-                          Text(
-                            "Page "+(resume+1).toString()+ " of "+total!,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: kLightBlackColor,
-                            ),
+                          SizedBox(height: 3),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                chapter_name!,
+                                style: TextStyle(
+                                  color: kSecondaryColor,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.04,
+                                ),
+                              ),
+                              Text(
+                                "Page " +
+                                    (resume + 1).toString() +
+                                    " of " +
+                                    total!,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: kLightBlackColor,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+                Container(
+                  height: 7,
+                  width: size.width *
+                      (int.parse(resume.toString()) / int.parse(total)),
+                  decoration: BoxDecoration(
+                    color: kPrimaryColor,
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                ),
+              ],
             ),
-            Container(
-              height: 7,
-              width: size.width*(int.parse(resume.toString())/int.parse(total)),
-              decoration: BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.circular(7),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ));
-  }
-  GestureDetector indexReading(Size size,String? day_name,String? chapter_name,String? total) {
-
-
-
-    return
-      GestureDetector(
-        onTap: (){
-          Navigator.push  (
-            context,
-            MaterialPageRoute(builder: (context) => IndexList()),
-          );
-        },
-    child:
-      Container(
-
-      margin: EdgeInsets.symmetric(vertical: 15),
-      height: 100,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(29),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 10),
-            blurRadius: 33,
-            color: Color(0xFFD3D3D3).withOpacity(.84),
           ),
-        ],
-      ),
-      child: ClipRRect(
-
-        borderRadius: BorderRadius.circular(29),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(left: 24, right: 24, top: 24),
-                child: Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        day_name!,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: kPrimaryColor,
-                          fontSize: MediaQuery.of(context).size.width * 0.04,
-                        ),
-                      ),
-
-                    ],
-                  ),
-                ),
-              ),
-            ),
-
-          ],
-        ),
-      ),
-    ));
+        ));
   }
 
   FutureOr refreshScreen(value) {
-
     setState(() {});
   }
 }

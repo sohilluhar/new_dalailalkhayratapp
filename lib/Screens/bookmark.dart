@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:dalailalkhayratapp/Widgets/chapter_card.dart';
 import 'package:dalailalkhayratapp/Widgets/customAppbar.dart';
-import 'package:dalailalkhayratapp/Widgets/read_card.dart';
 import 'package:dalailalkhayratapp/common/colors.dart';
 import 'package:dalailalkhayratapp/common/global.dart';
 import 'package:dalailalkhayratapp/database/db.dart';
@@ -13,16 +12,15 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../common/colors.dart';
+import '../common/colors.dart';
+
 class BookmarkList extends StatefulWidget {
-
-
   @override
   State<BookmarkList> createState() => _BookmarkListState();
 }
 
 class _BookmarkListState extends State<BookmarkList> {
-
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -44,101 +42,39 @@ class _BookmarkListState extends State<BookmarkList> {
         ],
       ),
       backgroundColor: kContentColorDarkTheme,
-      body:
-
-      SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-    child:
-    FutureBuilder<List<BookMark>>(
-
-    future: bmData,
-    builder: (context, snapshot) {
-    if (snapshot.hasData) {
-      return
-      GridView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-      // scrollDirection: Axis.vertical,
-      physics: NeverScrollableScrollPhysics(),
-    shrinkWrap: true,
-    itemCount: snapshot.data!.length,
-    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-    childAspectRatio: MediaQuery.of(context).size.width /
-    (MediaQuery.of(context).size.height / 5),
-    crossAxisCount: 1),
-    itemBuilder: (context, index) {
-        return  CardRead(
-                    day: snapshot.data![index].pdfName,
-                    chapter: pdfChapterName[snapshot.data![index].pdfName],
-                    pages: "Resume "+pdfbookCount[snapshot.data![index].pdfName]!+" page",
-                    delete: () {
-                      deleteBookMark(index);
-                    },
-                    press: () {gotoBookMark(snapshot.data![index]);},
-                  );
-    }
-    );
-
-    }
-    return Center(child: CircularProgressIndicator());
-    })
-    //     child: Padding(
-    //       padding: const EdgeInsets.symmetric(horizontal: 24),
-    //       child: Column(
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         children: <Widget>[
-    //
-    //           CardRead(
-    //             day: "Monday",
-    //             chapter: "Chapter Name",
-    //             pages: "10 pages",
-    //             delete: () {},
-    //             press: () {},
-    //           ),
-    //           CardRead(
-    //             day: "Monday",
-    //             chapter: "Chapter Name",
-    //             pages: "10 pages",
-    //             delete: () {},
-    //             press: () {},
-    //           ),
-    //           CardRead(
-    //             day: "Monday",
-    //             chapter: "Chapter Name",
-    //             pages: "10 pages",
-    //             delete: () {},
-    //             press: () {},
-    //           ),
-    //           CardRead(
-    //             day: "Monday",
-    //             chapter: "Chapter Name",
-    //             pages: "10 pages",
-    //             delete: () {},
-    //             press: () {},
-    //           ),
-    //           CardRead(
-    //             day: "Monday",
-    //             chapter: "Chapter Name",
-    //             pages: "10 pages",
-    //             delete: () {},
-    //             press: () {},
-    //           ),
-    //           CardRead(
-    //             day: "Monday",
-    //             chapter: "Chapter Name",
-    //             pages: "10 pages",
-    //             delete: () {},
-    //             press: () {},
-    //           ),
-    //           CardRead(
-    //             day: "Monday",
-    //             chapter: "Chapter Name",
-    //             pages: "10 pages",
-    //             delete: () {},
-    //             press: () {},
-    //           ),
-    //         ],
-    //       ),
-    //     ),
+      body: Container(
+        height: MediaQuery.of(context).size.height - 80,
+        child: FutureBuilder<List<BookMark>>(
+            future: bmData,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                    physics: const BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 20),
+                    shrinkWrap: false,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return ChapterCard(
+                        name: snapshot.data![index].pdfName,
+                        chapterNumber:
+                            pdfChapterName[snapshot.data![index].pdfName],
+                        // pages: "Resume " +
+                        //     pdfbookCount[snapshot.data![index].pdfName]! +
+                        //     " page",
+                        pages: "4 of 20 Pages",
+                        delete: () {
+                          deleteBookMark(index);
+                        },
+                        press: () {
+                          gotoBookMark(snapshot.data![index]);
+                        },
+                      );
+                    });
+              }
+              return Center(child: CircularProgressIndicator());
+            }),
       ),
     );
   }
@@ -146,25 +82,27 @@ class _BookmarkListState extends State<BookmarkList> {
   var bmData;
   @override
   void initState() {
-    bmData=getBookMark();
+    bmData = getBookMark();
   }
 
-
   Future<void> gotoBookMark(var bm) async {
-
-    var filename=pdfbook[bm.pdfName];
+    var filename = pdfbook[bm.pdfName];
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     await prefs.setString('resumebook', bm.pdfName);
 
-    await fromAsset('assets/pdf/'+filename!, filename+'.pdf').then((f) {
+    await fromAsset('assets/pdf/' + filename!, filename + '.pdf').then((f) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => PDFScreen(path: f.path,resumeco: resumecount,keyPDF: bm.pdfName,)),
+        MaterialPageRoute(
+            builder: (context) => PDFScreen(
+                  path: f.path,
+                  resumeco: resumecount,
+                  keyPDF: bm.pdfName,
+                )),
       );
     });
-
   }
 
   Future<File> fromAsset(String asset, String filename) async {
@@ -194,15 +132,15 @@ class _BookmarkListState extends State<BookmarkList> {
 
     final List<BookMark> bookMarkList;
 // Fetch and decode data
-    if(prefs.containsKey("bookmarkList")) {
+    if (prefs.containsKey("bookmarkList")) {
       final String? bookMarkString = await prefs.getString('bookmarkList');
 
-      bookMarkList= BookMark.decode(bookMarkString!);
-    }else{
-      bookMarkList=<BookMark>[];
+      bookMarkList = BookMark.decode(bookMarkString!);
+    } else {
+      bookMarkList = <BookMark>[];
     }
 
-    bookMarkList.removeAt (index);
+    bookMarkList.removeAt(index);
     final String encodedData = BookMark.encode(bookMarkList);
     print(encodedData);
     await prefs.setString('bookmarkList', encodedData);
@@ -211,9 +149,7 @@ class _BookmarkListState extends State<BookmarkList> {
       content: Text("Bookmark deleted."),
     ));
     setState(() {
-      bmData=getBookMark();
+      bmData = getBookMark();
     });
   }
-
-
 }

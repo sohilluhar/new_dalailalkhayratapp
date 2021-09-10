@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'common/colors.dart';
 import 'common/global.dart';
 
 class Settings extends StatefulWidget {
@@ -20,17 +21,21 @@ class _Settings extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kContentColorDarkTheme,
       appBar: AppBar(
         title: Text("Settings"),
       ),
-      body: Column(
-        children: [
-          _buildSwipeOption(),
-          Divider(),
-          _buildNigthmodeOption(),
-          Divider(),
-          _buildstrautospaceOption()
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            _buildSwipeOption(),
+            Divider(),
+            _buildNigthmodeOption(),
+            Divider(),
+            _buildstrautospaceOption()
+          ],
+        ),
       ),
     );
   }

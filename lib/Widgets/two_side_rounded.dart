@@ -23,7 +23,7 @@ class TwoSideRoundedButton extends StatelessWidget {
           color: kPrimaryColor,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(radious!),
-            bottomRight: Radius.circular(radious!),
+            bottomRight: Radius.circular(9),
           ),
         ),
         child: Text(
