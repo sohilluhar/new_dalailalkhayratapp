@@ -48,8 +48,6 @@ Map<String,String> pdfweekbook={
 };
 Map<String,String> pdfOtherbook={
 
-
-
 'Raza E Noorie (Arji)':    'other1.pdf',
 'Durood Mishkat sharif':   'other2.pdf',
 'Alwazifatal karim':       'other3.pdf',
@@ -62,15 +60,12 @@ Map<String,String> pdfOtherbook={
 
 Map<String,String> pdfIndexbookpgno={
 
-
   'Index1':'4',
   'Index2':'7',
   'Index3':'8',
   'Index4':'10',
   'Index5':'11',
   'Index5':'31',
-
-
 
 };
 Map<String,String> pdfIndexbookchname={

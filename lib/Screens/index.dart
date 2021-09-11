@@ -64,81 +64,54 @@ class _IndexListState extends State<IndexList> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextHeading("Begining", "Reading"),
+              TextHeading("Beginning", "Reading"),
               SizedBox(height: 15),
+
+            for(var key in pdfIndexbookpgno.keys)
+
+
               ChapterCard(
-                name: "Chapter 1",
-                pages: "Total 20 Pages",
-                press: () {},
-              ),
-              ChapterCard(
-                name: "Chapter 2",
-                pages: "Total 20 Pages",
-                press: () {},
-              ),
-              ChapterCard(
-                name: "Chapter 3",
-                pages: "Total 20 Pages",
-                press: () {},
-              ),
-              ChapterCard(
-                name: "Chapter 4",
-                pages: "Total 20 Pages",
-                press: () {},
+                name: pdfIndexbookchname[key],
+                pages: pdfIndexbookpgno[key]!+" Page",
+                press: () {
+                  gotoIndex(key);
+                },
               ),
               ChapterCard(
                 name: "Daily",
-                pages: "Total 20 Pages",
-                press: () {},
+                pages: "Total 22 Pages",
+                press: () {
+                    gotoBookMark('Daily');
+
+                },
               ),
+
               TextHeading("Weekday", "Reading"),
               SizedBox(height: 15),
+
+              for(String key in pdfweekbook.keys)
+                if(key!='Daily')
               ChapterCard(
-                name: "Monday",
-                pages: "Total 20 Pages",
-                press: () {},
+                name: key,
+                pages: "Total "+pdfbookCount[key]!+" Pages",
+                press: () {
+
+                  gotoBookMark(key);
+                },
               ),
-              ChapterCard(
-                name: "Tuesday",
-                pages: "Total 20 Pages",
-                press: () {},
-              ),
-              ChapterCard(
-                name: "Wednesday",
-                pages: "Total 20 Pages",
-                press: () {},
-              ),
-              ChapterCard(
-                name: "Thursday",
-                pages: "Total 20 Pages",
-                press: () {},
-              ),
-              ChapterCard(
-                name: "Friday",
-                pages: "Total 20 Pages",
-                press: () {},
-              ),
-              ChapterCard(
-                name: "Saturday",
-                pages: "Total 20 Pages",
-                press: () {},
-              ),
-              ChapterCard(
-                name: "Sunday",
-                pages: "Total 20 Pages",
-                press: () {},
-              ),
+
+
               TextHeading("Other", "Reading"),
               SizedBox(height: 15),
+
+              for(String key in pdfOtherbook.keys)
               ChapterCard(
-                name: "Sunday",
-                pages: "Total 20 Pages",
-                press: () {},
-              ),
-              ChapterCard(
-                name: "Sunday",
-                pages: "Total 20 Pages",
-                press: () {},
+                name: key,
+                pages: "Total "+pdfbookCount[key]!+" Pages",
+                press: () {
+
+                  gotoBookMark(key);
+                },
               ),
             ],
           ),
@@ -147,21 +120,33 @@ class _IndexListState extends State<IndexList> {
     );
   }
 
-  var bmData;
-  @override
-  void initState() {
-    bmData = getIndexMark();
-  }
 
-  Future<void> gotoBookMark(var bm) async {
-    await fromAsset('assets/pdf/prebook.pdf', 'prebook.pdf').then((f) {
-      Navigator.pushReplacement(
+  Future<void> gotoBookMark(String key) async {
+    var filename = pdfbook[key];
+
+    await fromAsset('assets/pdf/' + filename!, filename + '.pdf').then((f) {
+      Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => PDFScreen(
                   path: f.path,
-                  resumeco: bm.pageId,
-                  keyPDF: bm.pdfName,
+                  resumeco:0 ,
+                  keyPDF: key,
+                )),
+      );
+    });
+  }
+  Future<void> gotoIndex(String key) async {
+    var filename = pdfbook[key];
+
+    await fromAsset('assets/pdf/' + filename!, filename + '.pdf').then((f) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PDFScreen(
+                  path: f.path,
+                  resumeco:int.parse(pdfIndexbookpgno[key]!)-1 ,
+                  keyPDF: key,
                 )),
       );
     });
@@ -185,4 +170,5 @@ class _IndexListState extends State<IndexList> {
 
     return completer.future;
   }
+
 }

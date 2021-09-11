@@ -60,10 +60,9 @@ class _BookmarkListState extends State<BookmarkList> {
                         name: snapshot.data![index].pdfName,
                         chapterNumber:
                             pdfChapterName[snapshot.data![index].pdfName],
-                        // pages: "Resume " +
-                        //     pdfbookCount[snapshot.data![index].pdfName]! +
-                        //     " page",
-                        pages: "4 of 20 Pages",
+
+                        pages: (snapshot.data![index].pageId+1) .toString()+" Page ",
+                            // "/"+ pdfChapterName[snapshot.data![index].pdfName]+" ",
                         delete: () {
                           deleteBookMark(index);
                         },

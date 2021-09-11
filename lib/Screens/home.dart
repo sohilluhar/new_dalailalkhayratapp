@@ -134,12 +134,12 @@ class _HomeState extends State<Home> {
               TextHeading("Resume", "Reading"),
               continueReading(size, resumebook, pdfChapterName[resumebook],
                   pdfbookCount[resumebook]),
-              TextHeading("View", "Index"),
+              TextHeading("", "Content"),
               CardRead(
-                  day: pdfChapterName['Index'],
-                  chapter: "View all chapters",
-                  buttontext: "View Index",
-                  pages: pdfbookCount['Index']! + " Chapters",
+                  day: 'Index',
+                  chapter: "View",
+                  buttontext: "View Content",
+                  pages: "",
                   press: () {
                     Navigator.push(
                       context,
