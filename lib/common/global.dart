@@ -10,6 +10,7 @@ var autospace=true;
 var resumecount=0;
 var resumebook;
 var today_name;
+var lang;
 List<BookMark> bmList=<BookMark>[];
 List<BookMark> idxList=<BookMark>[];
 
@@ -21,6 +22,7 @@ Future<void> loadAll() async {
 
   resumecount=(prefs.getInt('resumecount') ?? 0);
   resumebook=(prefs.getString('resumebook') ?? 'Daily');
+  lang=(prefs.getString('lang') ?? 'Eng');
   today_name= DateFormat('EEEE').format(DateTime.now()).toString();
 }
 
@@ -88,3 +90,4 @@ print(encodedData);
 await prefs.setString('bookmarkList', encodedData);
 
 }
+
