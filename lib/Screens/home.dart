@@ -27,6 +27,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
   void loadFile(var bookkey) async {
     var con;
     var filename = pdfbook[bookkey];
@@ -110,7 +111,7 @@ class _HomeState extends State<Home> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Settings()),
-              );
+              ).then(refreshScreen);
             },
           ),
         ],
@@ -124,6 +125,7 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               SizedBox(height: size.height * 0.03),
               TextHeading("Today", "Reading"),
+              if(lang=="Eng")
               CardRead(
                   day: today_name,
                   chapter: pdfChapterName[today_name],
@@ -131,6 +133,15 @@ class _HomeState extends State<Home> {
                   press: () {
                     loadFile(today_name);
                   }),
+              if(lang=="Urdu")
+                    CardRead(
+                    day:pdfKeyUrdu[today_name],
+                    chapter: pdfChapterNameUrdu[today_name],
+                pages: pdfbookCount[today_name]! + " صفحات ",
+                    press: () {
+                  loadFile(today_name);
+                }),
+
               TextHeading("Resume", "Reading"),
               continueReading(size, resumebook, pdfChapterName[resumebook],
                   pdfbookCount[resumebook]),
@@ -189,7 +200,9 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-  // Widget IndexScroll() {
+
+
+   // Widget IndexScroll() {
   //   return SingleChildScrollView(
   //     scrollDirection: Axis.horizontal,
   //     child: Container(
