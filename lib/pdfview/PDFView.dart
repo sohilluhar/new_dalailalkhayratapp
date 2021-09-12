@@ -5,6 +5,7 @@ import 'package:dalailalkhayratapp/model/bookMark.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,9 +33,16 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
     print("resume pg is ");
     print(widget.resumeco);
+    super.initState();
+  }
+  @override
+  void dispose() {
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    super.dispose();
   }
 
   @override
@@ -61,8 +69,12 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
 
         ],
       ),
-      body: Stack(
+      body:
+
+      Stack(
+        alignment: Alignment.topCenter,
         children: <Widget>[
+
           PDFView(
             filePath: widget.path,
             enableSwipe: true,
@@ -73,8 +85,8 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
             pageSnap: true,
             defaultPage: widget.resumeco,
             fitPolicy: FitPolicy.BOTH,
-            // fitEachPage: true,
-            nightMode: nigthmode,
+            fitEachPage: true,
+            nightMode: false,
             preventLinkNavigation:
             false, // if set to true the link is handled in flutter
             onRender: (_pages) {
@@ -108,6 +120,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
               });
             },
           ),
+
           errorMessage.isEmpty
               ? !isReady
               ? Center(
