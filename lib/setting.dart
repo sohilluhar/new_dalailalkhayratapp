@@ -18,6 +18,7 @@ class _Settings extends State<Settings> {
   String? strhorizontalswip = "";
   String? strautospace = "";
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,9 @@ class _Settings extends State<Settings> {
             Divider(),
             _buildNigthmodeOption(),
             Divider(),
-            _buildstrautospaceOption()
+            _buildstrautospaceOption() ,
+            Divider(),
+            _buildLangOption()
           ],
         ),
       ),
@@ -139,6 +142,49 @@ class _Settings extends State<Settings> {
     );
   }
 
+  Widget _buildLangOption() {
+    final dropdown = DropdownButton<String>(
+      value: lang,
+      onChanged: (newval) {
+        setState(() {
+          lang = newval;
+setPrefString(newval);
+        });
+      },
+      items: [
+        DropdownMenuItem(
+          value: "Eng",
+          child: Text("English",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.black,
+              )),
+        ),
+        DropdownMenuItem(
+          value: "Urdu",
+          child: Text("Urdu",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.black,
+              )),
+        ),
+      ],
+    );
+
+    return ListTile(
+      contentPadding: const EdgeInsets.all(8),
+      title: Text("Language",
+          textAlign: TextAlign.start,
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+          )),
+      trailing: dropdown,
+    );
+  }
+
   Future<void> setPref(String key, var val) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(key, val);
@@ -210,5 +256,12 @@ class _Settings extends State<Settings> {
     } else {
       strautospace = "false";
     }
+  }
+
+
+  Future<void> setPrefString(String? newval) async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('lang', newval!);
   }
 }
