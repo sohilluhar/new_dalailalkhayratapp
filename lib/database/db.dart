@@ -2,6 +2,7 @@ Map<String,String> pdfbook={
 
   'Index':'prebook.pdf',
 
+  'Index0':'prebook.pdf',
   'Index1':'prebook.pdf',
   'Index2':'prebook.pdf',
   'Index3':'prebook.pdf',
@@ -60,6 +61,7 @@ Map<String,String> pdfOtherbook={
 
 Map<String,String> pdfIndexbookpgno={
 
+  'Index0':'1',
   'Index1':'4',
   'Index2':'7',
   'Index3':'8',
@@ -71,6 +73,7 @@ Map<String,String> pdfIndexbookpgno={
 Map<String,String> pdfIndexbookchname={
 
 
+  'Index0':'Fehrist',
   'Index1':'Taqdeem',
   'Index2':'Padhne ka Tareeqa',
   'Index3':'Musannif ki Mukhtasar',
@@ -130,6 +133,72 @@ Map<String,String> pdfChapterName={
   'Benazir Amsal':'Benazir Amsal',
   'Fazaile Durood E Razviya':'Fazaile Durood E Razviya',
 
+
+  'Index0':'Fehrist',
+  'Index1':'Taqdeem',
+  'Index2':'Padhne ka Tareeqa',
+  'Index3':'Musannif ki Mukhtasar',
+  'Index4':'Ijaazat Nama',
+  'Index5':'Fazaaile Salaat',
+  'Index5':'Safatual Roza',
+
+};
+
+
+Map<String,String> pdfChapterNameUrdu={
+  'Index':'Index',
+  'Daily':'Daily',
+  'Start Dua':'Dua',
+
+  'Monday':'آپ کسی ہے',
+  'Tuesday':'آپ کسی ہے',
+  'Wednesday':'آپ کسی ہے' ,
+  'Thursday':'Manzil Chaharam',
+  'Friday':'Manzil Chaharam',
+  'Saturday':'Manzil Shashum',
+  'Sunday':'آپ کسی ہے',
+
+  'End Dua':'Dua',
+
+  'Raza E Noorie (Arji)':'Raza E Noorie (Arji)',
+  'Durood Mishkat sharif':'Durood Mishkat sharif',
+  'Alwazifatal karim':'Alwazifatal karima',
+  'Benazir Amsal':'Benazir Amsal',
+  'Fazaile Durood E Razviya':'Fazaile Durood E Razviya',
+
+
+  'Index0':'Fehrist',
+  'Index1':'Taqdeem',
+  'Index2':'Padhne ka Tareeqa',
+  'Index3':'Musannif ki Mukhtasar',
+  'Index4':'Ijaazat Nama',
+  'Index5':'Fazaaile Salaat',
+  'Index5':'Safatual Roza',
+
+};
+
+Map<String,String> pdfKeyUrdu={
+  'Index':'Index',
+  'Daily':'Daily',
+  'Start Dua':'Dua',
+
+  'Monday':'پیر',
+  'Tuesday':'منگل',
+  'Wednesday':'بدھ' ,
+  'Thursday':'جمعرات',
+  'Friday':'جمعہ',
+  'Saturday':'ہفتہ',
+  'Sunday':'اتوار',
+
+  'End Dua':'Dua',
+
+  'Raza E Noorie (Arji)':'Raza E Noorie (Arji)',
+  'Durood Mishkat sharif':'Durood Mishkat sharif',
+  'Alwazifatal karim':'Alwazifatal karima',
+  'Benazir Amsal':'Benazir Amsal',
+  'Fazaile Durood E Razviya':'Fazaile Durood E Razviya',
+
+  'Index0':'Fehrist',
 
   'Index1':'Taqdeem',
   'Index2':'Padhne ka Tareeqa',
