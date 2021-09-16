@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Widgets/customAppbar.dart';
 import 'common/colors.dart';
 import 'common/global.dart';
 
@@ -18,27 +19,34 @@ class _Settings extends State<Settings> {
   String? strhorizontalswip = "";
   String? strautospace = "";
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kContentColorDarkTheme,
-      appBar: AppBar(
-        title: Text("Settings"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            _buildSwipeOption(),
-            Divider(),
-            _buildNigthmodeOption(),
-            Divider(),
-            _buildstrautospaceOption() ,
-            Divider(),
-            _buildLangOption()
-          ],
-        ),
+      body: CustomScrollView(
+        physics: BouncingScrollPhysics(),
+        slivers: [
+          CustomAppBar(
+            title: "Bookmark",
+            showBack: true,
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  _buildSwipeOption(),
+                  Divider(),
+                  _buildNigthmodeOption(),
+                  Divider(),
+                  _buildstrautospaceOption(),
+                  Divider(),
+                  _buildLangOption()
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -148,7 +156,7 @@ class _Settings extends State<Settings> {
       onChanged: (newval) {
         setState(() {
           lang = newval;
-setPrefString(newval);
+          setPrefString(newval);
         });
       },
       items: [
@@ -258,10 +266,20 @@ setPrefString(newval);
     }
   }
 
-
   Future<void> setPrefString(String? newval) async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('lang', newval!);
   }
 }
+// Consumer<MyThemeModel>(
+// builder: (context, theme, child) => GestureDetector(
+// onTap: () => theme.changeTheme(),
+// child: SvgPicture.asset(
+// theme.isLightTheme
+// ? "assets/icons/Sun.svg"
+// : "assets/icons/Moon.svg",
+// height: 24,
+// width: 24,
+// color: Theme.of(context).primaryColor,
+// ),
+// ),

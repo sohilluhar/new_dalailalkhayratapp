@@ -26,7 +26,7 @@ class CardRead extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 15),
       width: double.infinity,
-      height: 81,
+      height: MediaQuery.of(context).size.width * 0.2,
       decoration: BoxDecoration(
         // color: Colors.white,
         borderRadius: BorderRadius.circular(9),
@@ -52,7 +52,7 @@ class CardRead extends StatelessWidget {
                   top: 21,
                   right: size.width * .35,
                 ),
-                height: 81,
+                height: MediaQuery.of(context).size.width * 0.2,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,

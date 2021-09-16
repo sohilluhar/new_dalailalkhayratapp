@@ -27,7 +27,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   void loadFile(var bookkey) async {
     var con;
     var filename = pdfbook[bookkey];
@@ -77,104 +76,110 @@ class _HomeState extends State<Home> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kContentColorDarkTheme,
-      appBar: CustomAppBar(
-        title: "Dala'il Al Khayrat",
-        showBack: false,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.format_list_bulleted),
-            tooltip: "Index",
-            onPressed: () {
-              print("index");
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => IndexList()),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.bookmark),
-            tooltip: "Bookmark List",
-            onPressed: () {
-              print("bookmark");
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => BookmarkList()),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.settings),
-            tooltip: "Setting",
-            onPressed: () {
-              print("Setting");
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Settings()),
-              ).then(refreshScreen);
-            },
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
+      body: CustomScrollView(
         physics: BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: size.height * 0.03),
-              TextHeading("Today", "Reading"),
-              if(lang=="Eng")
-              CardRead(
-                  day: today_name,
-                  chapter: pdfChapterName[today_name],
-                  pages: pdfbookCount[today_name]! + " Pages",
-                  press: () {
-                    loadFile(today_name);
-                  }),
-              if(lang=="Urdu")
-                    CardRead(
-                    day:pdfKeyUrdu[today_name],
-                    chapter: pdfChapterNameUrdu[today_name],
-                pages: pdfbookCount[today_name]! + " صفحات ",
-                    press: () {
-                  loadFile(today_name);
-                }),
-
-              TextHeading("Resume", "Reading"),
-              continueReading(size, resumebook, pdfChapterName[resumebook],
-                  pdfbookCount[resumebook]),
-              TextHeading("", "Content"),
-              CardRead(
-                  day: 'Index',
-                  chapter: "View",
-                  buttontext: "View Content",
-                  pages: "",
-                  press: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => IndexList()),
-                    );
-                  }),
-
-              // TextHeading("Weekday", "Index"),
-              // IndexScroll(),
-              TextHeading("Daily", "Reading"),
-              CardRead(
-                  day: "Daily",
-                  chapter: "Daily",
-                  pages: "22 Pages",
-                  press: () {
-                    loadFile(today_name);
-                  }),
-              TextHeading("Weekday", "Reading"),
-              WeeklyScroll(),
-              TextHeading("Other", "Reading"),
-              OtherScroll(),
+        slivers: [
+          CustomAppBar(
+            title: "Dala'il Al Khayrat",
+            showBack: false,
+            actions: [
+              IconButton(
+                icon: Icon(Icons.format_list_bulleted),
+                tooltip: "Index",
+                onPressed: () {
+                  print("index");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => IndexList()),
+                  );
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.bookmark),
+                tooltip: "Bookmark List",
+                onPressed: () {
+                  print("bookmark");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BookmarkList()),
+                  );
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.settings),
+                tooltip: "Setting",
+                onPressed: () {
+                  print("Setting");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Settings()),
+                  ).then(refreshScreen);
+                },
+              ),
             ],
           ),
-        ),
+          SliverPadding(
+            padding: Platform.isIOS
+                ? const EdgeInsets.symmetric(horizontal: 20)
+                : const EdgeInsets.symmetric(horizontal: 24),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(height: size.height * 0.03),
+                  TextHeading("Today", "Reading"),
+                  if (lang == "Eng")
+                    CardRead(
+                        day: today_name,
+                        chapter: pdfChapterName[today_name],
+                        pages: pdfbookCount[today_name]! + " Pages",
+                        press: () {
+                          loadFile(today_name);
+                        }),
+                  if (lang == "Urdu")
+                    CardRead(
+                        day: pdfKeyUrdu[today_name],
+                        chapter: pdfChapterNameUrdu[today_name],
+                        pages: pdfbookCount[today_name]! + " صفحات ",
+                        press: () {
+                          loadFile(today_name);
+                        }),
+
+                  TextHeading("Resume", "Reading"),
+                  continueReading(size, resumebook, pdfChapterName[resumebook],
+                      pdfbookCount[resumebook]),
+                  TextHeading("", "Content"),
+                  CardRead(
+                      day: 'Index',
+                      chapter: "View",
+                      buttontext: "View Content",
+                      pages: "",
+                      press: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => IndexList()),
+                        );
+                      }),
+
+                  // TextHeading("Weekday", "Index"),
+                  // IndexScroll(),
+                  TextHeading("Daily", "Reading"),
+                  CardRead(
+                      day: "Daily",
+                      chapter: "Daily",
+                      pages: "22 Pages",
+                      press: () {
+                        loadFile(today_name);
+                      }),
+                  TextHeading("Weekday", "Reading"),
+                  WeeklyScroll(),
+                  TextHeading("Other", "Reading"),
+                  OtherScroll(),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -201,8 +206,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-
-   // Widget IndexScroll() {
+  // Widget IndexScroll() {
   //   return SingleChildScrollView(
   //     scrollDirection: Axis.horizontal,
   //     child: Container(
@@ -273,7 +277,7 @@ class _HomeState extends State<Home> {
         },
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 15),
-          height: 81,
+          height: MediaQuery.of(context).size.width * 0.2,
           width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,

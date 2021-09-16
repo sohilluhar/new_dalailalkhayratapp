@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'Home.dart';
-import 'Screens/onboarding.dart';
+import 'package:provider/provider.dart';
 import 'Screens/splash_screen.dart';
 import 'common/theme.dart';
+import 'model/mytheme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,11 +13,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: lightThemeData(context),
-      darkTheme: darkThemeData(context),
-      home: SplashScreen(),
-    );
+    return ChangeNotifierProvider(
+        create: (context) => MyThemeModel(),
+        child: Consumer<MyThemeModel>(
+          builder: (context, theme, child) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Analog Clock',
+            theme: lightThemeData(context),
+            darkTheme: darkThemeData(context),
+            themeMode: theme.isLightTheme ? ThemeMode.light : ThemeMode.dark,
+            home: SplashScreen(),
+          ),
+        ));
   }
 }

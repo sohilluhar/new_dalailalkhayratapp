@@ -101,7 +101,7 @@ class ReadingListCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(9),
         ),
         margin: EdgeInsets.only(right: 20, bottom: 10),
-        height: 76,
+        height: MediaQuery.of(context).size.width * 0.2,
         width: 200,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,6 +119,7 @@ class ReadingListCard extends StatelessWidget {
                     ),
                   ),
                 )),
+            Spacer(),
             Row(
               children: <Widget>[
                 Container(

@@ -1,18 +1,13 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:dalailalkhayratapp/Widgets/chapter_card.dart';
 import 'package:dalailalkhayratapp/Widgets/customAppbar.dart';
-import 'package:dalailalkhayratapp/Widgets/read_card.dart';
 import 'package:dalailalkhayratapp/common/colors.dart';
-import 'package:dalailalkhayratapp/common/global.dart';
 import 'package:dalailalkhayratapp/database/db.dart';
-import 'package:dalailalkhayratapp/model/bookMark.dart';
 import 'package:dalailalkhayratapp/pdfview/PDFView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class IndexList extends StatefulWidget {
   @override
@@ -24,11 +19,6 @@ class _IndexListState extends State<IndexList> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: CustomAppBar(
-        title: "Content",
-        showBack: true,
-        actions: [],
-      ),
       backgroundColor: kContentColorDarkTheme,
       // body: Container(
       //   height: MediaQuery.of(context).size.height - 80,
@@ -57,69 +47,65 @@ class _IndexListState extends State<IndexList> {
       //         return Center(child: CircularProgressIndicator());
       //       }),
       // ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextHeading("Beginning", "Reading"),
-              SizedBox(height: 15),
-
-            for(var key in pdfIndexbookpgno.keys)
-
-
-              ChapterCard(
-                name: pdfIndexbookchname[key],
-                pages: pdfIndexbookpgno[key]!+" Page",
-                press: () {
-                  gotoIndex(key);
-                },
-              ),
-              ChapterCard(
-                name: "Daily",
-                pages: "Total 22 Pages",
-                press: () {
+      body: CustomScrollView(physics: BouncingScrollPhysics(), slivers: [
+        CustomAppBar(
+          title: "Content",
+          showBack: true,
+          actions: [],
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: Platform.isIOS
+                ? const EdgeInsets.symmetric(horizontal: 20, vertical: 20)
+                : const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextHeading("Beginning", "Reading"),
+                SizedBox(height: 15),
+                for (var key in pdfIndexbookpgno.keys)
+                  ChapterCard(
+                    name: pdfIndexbookchname[key],
+                    pages: pdfIndexbookpgno[key]! + " Page",
+                    press: () {
+                      gotoIndex(key);
+                    },
+                  ),
+                ChapterCard(
+                  name: "Daily",
+                  pages: "Total 22 Pages",
+                  press: () {
                     gotoBookMark('Daily');
-
-                },
-              ),
-
-              TextHeading("Weekday", "Reading"),
-              SizedBox(height: 15),
-
-              for(String key in pdfweekbook.keys)
-                if(key!='Daily')
-              ChapterCard(
-                name: key,
-                pages: "Total "+pdfbookCount[key]!+" Pages",
-                press: () {
-
-                  gotoBookMark(key);
-                },
-              ),
-
-
-              TextHeading("Other", "Reading"),
-              SizedBox(height: 15),
-
-              for(String key in pdfOtherbook.keys)
-              ChapterCard(
-                name: key,
-                pages: "Total "+pdfbookCount[key]!+" Pages",
-                press: () {
-
-                  gotoBookMark(key);
-                },
-              ),
-            ],
+                  },
+                ),
+                TextHeading("Weekday", "Reading"),
+                SizedBox(height: 15),
+                for (String key in pdfweekbook.keys)
+                  if (key != 'Daily')
+                    ChapterCard(
+                      name: key,
+                      pages: "Total " + pdfbookCount[key]! + " Pages",
+                      press: () {
+                        gotoBookMark(key);
+                      },
+                    ),
+                TextHeading("Other", "Reading"),
+                SizedBox(height: 15),
+                for (String key in pdfOtherbook.keys)
+                  ChapterCard(
+                    name: key,
+                    pages: "Total " + pdfbookCount[key]! + " Pages",
+                    press: () {
+                      gotoBookMark(key);
+                    },
+                  ),
+              ],
+            ),
           ),
         ),
-      ),
+      ]),
     );
   }
-
 
   Future<void> gotoBookMark(String key) async {
     var filename = pdfbook[key];
@@ -130,12 +116,13 @@ class _IndexListState extends State<IndexList> {
         MaterialPageRoute(
             builder: (context) => PDFScreen(
                   path: f.path,
-                  resumeco:0 ,
+                  resumeco: 0,
                   keyPDF: key,
                 )),
       );
     });
   }
+
   Future<void> gotoIndex(String key) async {
     var filename = pdfbook[key];
 
@@ -145,7 +132,7 @@ class _IndexListState extends State<IndexList> {
         MaterialPageRoute(
             builder: (context) => PDFScreen(
                   path: f.path,
-                  resumeco:int.parse(pdfIndexbookpgno[key]!)-1 ,
+                  resumeco: int.parse(pdfIndexbookpgno[key]!) - 1,
                   keyPDF: key,
                 )),
       );
@@ -170,5 +157,4 @@ class _IndexListState extends State<IndexList> {
 
     return completer.future;
   }
-
 }

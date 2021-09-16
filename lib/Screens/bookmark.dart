@@ -25,55 +25,69 @@ class _BookmarkListState extends State<BookmarkList> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: CustomAppBar(
-        title: "Bookmark",
-        showBack: true,
-        actions: [
-          // IconButton(
-          //   icon: Icon(Icons.bookmark),
-          //   onPressed: () {
-          //     print("bookmark");
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => BookmarkList()),
-          //     );
-          //   },
-          // ),
-        ],
-      ),
       backgroundColor: kContentColorDarkTheme,
-      body: Container(
-        height: MediaQuery.of(context).size.height - 80,
-        child: FutureBuilder<List<BookMark>>(
-            future: bmData,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                    physics: const BouncingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics()),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 20),
-                    shrinkWrap: false,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return ChapterCard(
-                        name: snapshot.data![index].pdfName,
-                        chapterNumber:
-                            pdfChapterName[snapshot.data![index].pdfName],
+      body: CustomScrollView(
+        physics: BouncingScrollPhysics(),
+        slivers: [
+          CustomAppBar(
+            title: "Bookmark",
+            showBack: true,
+            actions: [
+              // IconButton(
+              //   icon: Icon(Icons.bookmark),
+              //   onPressed: () {
+              //     print("bookmark");
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) => BookmarkList()),
+              //     );
+              //   },
+              // ),
+            ],
+          ),
+          SliverPadding(
+            padding: Platform.isIOS
+                ? const EdgeInsets.symmetric(horizontal: 20, vertical: 20)
+                : const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+            sliver: SliverToBoxAdapter(
+              child: Container(
+                height: MediaQuery.of(context).size.height - 80,
+                child: FutureBuilder<List<BookMark>>(
+                    future: bmData,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 0),
+                            physics: const BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            shrinkWrap: false,
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              return ChapterCard(
+                                name: snapshot.data![index].pdfName,
+                                chapterNumber: pdfChapterName[
+                                    snapshot.data![index].pdfName],
 
-                        pages: (snapshot.data![index].pageId+1) .toString()+" Page ",
-                            // "/"+ pdfChapterName[snapshot.data![index].pdfName]+" ",
-                        delete: () {
-                          deleteBookMark(index);
-                        },
-                        press: () {
-                          gotoBookMark(snapshot.data![index]);
-                        },
-                      );
-                    });
-              }
-              return Center(child: CircularProgressIndicator());
-            }),
+                                pages: (snapshot.data![index].pageId + 1)
+                                        .toString() +
+                                    " Page ",
+                                // "/"+ pdfChapterName[snapshot.data![index].pdfName]+" ",
+                                delete: () {
+                                  deleteBookMark(index);
+                                },
+                                press: () {
+                                  gotoBookMark(snapshot.data![index]);
+                                },
+                              );
+                            });
+                      }
+                      return Center(child: CircularProgressIndicator());
+                    }),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

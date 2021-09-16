@@ -20,7 +20,9 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         super(key: key);
   @override
   Widget build(BuildContext context) {
-    return AppBar(
+    return SliverAppBar(
+      floating: true,
+      snap: true,
       automaticallyImplyLeading: false,
       backgroundColor: kPrimaryColor,
       leading: showBack!
