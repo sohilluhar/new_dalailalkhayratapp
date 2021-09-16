@@ -11,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../common/colors.dart';
 import '../common/colors.dart';
 
 class BookmarkList extends StatefulWidget {
@@ -64,40 +62,42 @@ class _BookmarkListState extends State<BookmarkList> {
                             shrinkWrap: false,
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
-                      if (lang!="Urdu")
-                              return ChapterCard(
-                                name: snapshot.data![index].pdfName,
-                                chapterNumber: pdfChapterName[
-                                    snapshot.data![index].pdfName],
+                              if (lang != "Urdu")
+                                return ChapterCard(
+                                  name: snapshot.data![index].pdfName,
+                                  chapterNumber: pdfChapterName[
+                                      snapshot.data![index].pdfName],
 
-                                pages: (snapshot.data![index].pageId + 1)
-                                        .toString() +
-                                    " Page ",
-                                // "/"+ pdfChapterName[snapshot.data![index].pdfName]+" ",
-                                delete: () {
-                                  deleteBookMark(index);
-                                },
-                                press: () {
-                                  gotoBookMark(snapshot.data![index]);
-                                },
-                              );
-                      if (lang=="Urdu")
-                            return ChapterCard(
-                              name:pdfKeyUrdu[ snapshot.data![index].pdfName],
-                              chapterNumber:
+                                  pages: (snapshot.data![index].pageId + 1)
+                                          .toString() +
+                                      " Page ",
+                                  // "/"+ pdfChapterName[snapshot.data![index].pdfName]+" ",
+                                  delete: () {
+                                    deleteBookMark(index);
+                                  },
+                                  press: () {
+                                    gotoBookMark(snapshot.data![index]);
+                                  },
+                                );
+                              if (lang == "Urdu")
+                                return ChapterCard(
+                                  name:
+                                      pdfKeyUrdu[snapshot.data![index].pdfName],
+                                  chapterNumber: pdfChapterNameUrdu[
+                                      snapshot.data![index].pdfName],
 
-                              pdfChapterNameUrdu[snapshot.data![index].pdfName],
-
-                              pages: (snapshot.data![index].pageId+1) .toString()+" مزید ",
-                              // "/"+ pdfChapterName[snapshot.data![index].pdfName]+" ",
-                              delete: () {
-                                deleteBookMark(index);
-                              },
-                              press: () {
-                                gotoBookMark(snapshot.data![index]);
-                              },
-                            );
-                      return SizedBox.shrink();
+                                  pages: (snapshot.data![index].pageId + 1)
+                                          .toString() +
+                                      " مزید ",
+                                  // "/"+ pdfChapterName[snapshot.data![index].pdfName]+" ",
+                                  delete: () {
+                                    deleteBookMark(index);
+                                  },
+                                  press: () {
+                                    gotoBookMark(snapshot.data![index]);
+                                  },
+                                );
+                              return SizedBox.shrink();
                             });
                       }
                       return Center(child: CircularProgressIndicator());

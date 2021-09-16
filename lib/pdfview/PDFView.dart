@@ -10,26 +10,32 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../BookMark.dart';
+import '../common/colors.dart';
+import '../common/colors.dart';
 
 class PDFScreen extends StatefulWidget {
   final String path;
   final String keyPDF;
   late final int resumeco;
 
-  PDFScreen({Key? key, required this.path,required this.resumeco,required this.keyPDF}) : super(key: key);
+  PDFScreen(
+      {Key? key,
+      required this.path,
+      required this.resumeco,
+      required this.keyPDF})
+      : super(key: key);
 
   _PDFScreenState createState() => _PDFScreenState();
 }
 
 class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
   final Completer<PDFViewController> _controller =
-  Completer<PDFViewController>();
+      Completer<PDFViewController>();
 
   var pages = 0;
   // var currentPage = widget.resumeco;
   bool isReady = false;
   String errorMessage = '';
-
 
   @override
   void initState() {
@@ -39,6 +45,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
     print(widget.resumeco);
     super.initState();
   }
+
   @override
   void dispose() {
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -48,6 +55,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimaryColor,
       appBar: AppBar(
         title: Text(pdfChapterName[widget.keyPDF]!),
         actions: <Widget>[
@@ -55,7 +63,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
               padding: EdgeInsets.only(right: 20.0),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement  (
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => BookmarkList()),
                   );
@@ -64,89 +72,91 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
                   Icons.bookmark,
                   size: 26.0,
                 ),
-              )
-          ),
-
+              )),
         ],
       ),
-      body:
-
-      Stack(
-        alignment: Alignment.topCenter,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          Container(
+            height: MediaQuery.of(context).size.height - 275,
+            child: PDFView(
+              filePath: widget.path,
+              enableSwipe: true,
+              swipeHorizontal: horizontalswip,
+              autoSpacing: autospace,
+              pageFling: true,
+              pageSnap: true,
+              defaultPage: widget.resumeco,
+              fitPolicy: FitPolicy.BOTH,
+              fitEachPage: true,
+              nightMode: false,
+              preventLinkNavigation:
+                  false, // if set to true the link is handled in flutter
+              onRender: (_pages) {
+                setState(() {
+                  pages = _pages!;
+                  isReady = true;
+                });
+              },
+              onError: (error) {
+                setState(() {
+                  errorMessage = error.toString();
+                });
+                print(error.toString());
+              },
+              onPageError: (page, error) {
+                setState(() {
+                  errorMessage = '$page: ${error.toString()}';
+                });
+                print('$page: ${error.toString()}');
+              },
+              onViewCreated: (PDFViewController pdfViewController) {
+                _controller.complete(pdfViewController);
+              },
 
-          PDFView(
-            filePath: widget.path,
-            enableSwipe: true,
-
-            swipeHorizontal: horizontalswip,
-            autoSpacing: autospace,
-            pageFling: true,
-            pageSnap: true,
-            defaultPage: widget.resumeco,
-            fitPolicy: FitPolicy.BOTH,
-            fitEachPage: true,
-            nightMode: false,
-            preventLinkNavigation:
-            false, // if set to true the link is handled in flutter
-            onRender: (_pages) {
-              setState(() {
-                pages = _pages!;
-                isReady = true;
-              });
-            },
-            onError: (error) {
-              setState(() {
-                errorMessage = error.toString();
-              });
-              print(error.toString());
-            },
-            onPageError: (page, error) {
-              setState(() {
-                errorMessage = '$page: ${error.toString()}';
-              });
-              print('$page: ${error.toString()}');
-            },
-            onViewCreated: (PDFViewController pdfViewController) {
-              _controller.complete(pdfViewController);
-            },
-
-            onPageChanged: (int? page, int? total) {
-              print('page change: $page/$total');
-              setState(() {
-
-                setResumeCount(page!);
-                widget.resumeco = page;
-              });
-            },
+              onPageChanged: (int? page, int? total) {
+                print('page change: $page/$total');
+                setState(() {
+                  setResumeCount(page!);
+                  widget.resumeco = page;
+                });
+              },
+            ),
           ),
-
           errorMessage.isEmpty
               ? !isReady
-              ? Center(
-            child: CircularProgressIndicator(),
-          )
-              : Container()
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Container()
               : Center(
-            child: Text(errorMessage),
-          )
+                  child: Text(errorMessage),
+                )
         ],
       ),
       floatingActionButton: FutureBuilder<PDFViewController>(
         future: _controller.future,
         builder: (context, AsyncSnapshot<PDFViewController> snapshot) {
           if (snapshot.hasData) {
-            return FloatingActionButton.extended(
-              icon: Icon(Icons.bookmark)  ,
-              label: Text(""),
+            return FloatingActionButton(
+              child: Icon(
+                Icons.bookmark,
+                color: Colors.white,
+              ),
+              backgroundColor: kPrimaryColor,
               onPressed: () async {
                 // await snapshot.data!.setPage(pages ~/ 2);
-                String? imgName=resumecount.toString();
+                String? imgName = resumecount.toString();
 
-                addBookMark(new BookMark(chaptername: imgName,pageId: resumecount,pdfName:resumebook));
+                addBookMark(new BookMark(
+                    chaptername: imgName,
+                    pageId: resumecount,
+                    pdfName: resumebook));
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("Page "+(resumecount+1).toString()+" book marked."),
+                  content: Text(
+                      "Page " + (resumecount + 1).toString() + " book marked."),
                 ));
               },
             );
@@ -159,15 +169,10 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
   }
 
   Future<void> setResumeCount(int page) async {
-
-
-    resumecount=page;
+    resumecount = page;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('resumecount',page);
+    prefs.setInt('resumecount', page);
     print("resume count set");
     print(page);
-
   }
-
-
 }
