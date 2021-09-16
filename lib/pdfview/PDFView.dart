@@ -36,6 +36,8 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
   // var currentPage = widget.resumeco;
   bool isReady = false;
   String errorMessage = '';
+  String title='';
+
 
   @override
   void initState() {
@@ -43,7 +45,11 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
 
     print("resume pg is ");
     print(widget.resumeco);
-    super.initState();
+    if(lang!='Urdu')
+      title=pdfChapterName[widget.keyPDF]!;
+      else
+      title=pdfChapterNameUrdu[widget.keyPDF]!;
+        super.initState();
   }
 
   @override
@@ -57,7 +63,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: AppBar(
-        title: Text(pdfChapterName[widget.keyPDF]!),
+        title: Text(title),
         actions: <Widget>[
           Padding(
               padding: EdgeInsets.only(right: 20.0),
@@ -118,7 +124,8 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
               onPageChanged: (int? page, int? total) {
                 print('page change: $page/$total');
                 setState(() {
-                  setResumeCount(page!);
+
+                setResumeCount(page!,widget.keyPDF);
                   widget.resumeco = page;
                 });
               },
@@ -168,11 +175,16 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
     );
   }
 
+  Future<void> setResumeCount(int page,var keyPDF) async {
+
+    if(keyPDF==resumebook) {
   Future<void> setResumeCount(int page) async {
-    resumecount = page;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('resumecount', page);
-    print("resume count set");
-    print(page);
+      resumecount = page;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setInt('resumecount', page);
+      print("resume count set");
+      print(page);
+    }
+  }
   }
 }

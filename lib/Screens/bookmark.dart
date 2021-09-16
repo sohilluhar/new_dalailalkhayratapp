@@ -22,13 +22,19 @@ class _BookmarkListState extends State<BookmarkList> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
+    var titlestr='';
+    if(lang!='Urdu')
+      titlestr='Bookmarks';
+    else
+      titlestr='نشانی ';
     return Scaffold(
       backgroundColor: kContentColorDarkTheme,
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
         slivers: [
           CustomAppBar(
-            title: "Bookmark",
+            title: titlestr,
             showBack: true,
             actions: [
               // IconButton(

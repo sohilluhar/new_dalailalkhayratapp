@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dalailalkhayratapp/Widgets/chapter_card.dart';
 import 'package:dalailalkhayratapp/Widgets/customAppbar.dart';
 import 'package:dalailalkhayratapp/common/colors.dart';
+import 'package:dalailalkhayratapp/common/global.dart';
 import 'package:dalailalkhayratapp/database/db.dart';
 import 'package:dalailalkhayratapp/pdfview/PDFView.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,15 @@ class IndexList extends StatefulWidget {
 class _IndexListState extends State<IndexList> {
   @override
   Widget build(BuildContext context) {
+
     var size = MediaQuery.of(context).size;
+
+    var titlestr='';
+    if(lang!='Urdu')
+      titlestr='Content';
+    else
+      titlestr='فہرست';
+    
     return Scaffold(
       backgroundColor: kContentColorDarkTheme,
       // body: Container(
@@ -49,7 +58,7 @@ class _IndexListState extends State<IndexList> {
       // ),
       body: CustomScrollView(physics: BouncingScrollPhysics(), slivers: [
         CustomAppBar(
-          title: "Content",
+          title: titlestr,
           showBack: true,
           actions: [],
         ),
@@ -61,27 +70,39 @@ class _IndexListState extends State<IndexList> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextHeading("Beginning", "Reading"),
-                SizedBox(height: 15),
-                for (var key in pdfIndexbookpgno.keys)
+                if(lang!='Urdu')...[
+                  TextHeading("Beginning", "Reading"),
+                  SizedBox(height: 15),
+
+                  for (var key in pdfIndexbookpgno.keys)
+                    ChapterCard(
+                      name: pdfIndexbookchname[key],
+                      pages: pdfIndexbookpgno[key]! + " Page",
+                      press: () {
+                        gotoIndex(key);
+                      },
+                    ),
                   ChapterCard(
-                    name: pdfIndexbookchname[key],
-                    pages: pdfIndexbookpgno[key]! + " Page",
+                    name: "Daily",
+                    pages: "Total 22 Pages",
                     press: () {
-                      gotoIndex(key);
+                      gotoBookMark('Daily');
                     },
                   ),
-                ChapterCard(
-                  name: "Daily",
-                  pages: "Total 22 Pages",
-                  press: () {
-                    gotoBookMark('Daily');
-                  },
-                ),
-                TextHeading("Weekday", "Reading"),
-                SizedBox(height: 15),
-                for (String key in pdfweekbook.keys)
-                  if (key != 'Daily')
+                  TextHeading("Weekday", "Reading"),
+                  SizedBox(height: 15),
+                  for (String key in pdfweekbook.keys)
+                    if (key != 'Daily')
+                      ChapterCard(
+                        name: key,
+                        pages: "Total " + pdfbookCount[key]! + " Pages",
+                        press: () {
+                          gotoBookMark(key);
+                        },
+                      ),
+                  TextHeading("More", "Reading"),
+                  SizedBox(height: 15),
+                  for (String key in pdfOtherbook.keys)
                     ChapterCard(
                       name: key,
                       pages: "Total " + pdfbookCount[key]! + " Pages",
@@ -89,16 +110,50 @@ class _IndexListState extends State<IndexList> {
                         gotoBookMark(key);
                       },
                     ),
-                TextHeading("Other", "Reading"),
+
+                ]
+                else...[
+                TextHeading("آغاز", "پڑھیں"),
+                SizedBox(height: 15),
+
+                for (var key in pdfIndexbookpgno.keys)
+                  ChapterCard(
+                    name: pdfChapterNameUrdu[key],
+                    pages: pdfIndexbookpgno[key]! + " صفحہ",
+                    press: () {
+                      gotoIndex(key);
+                    },
+                  ),
+                ChapterCard(
+                  name: "روزانہ",
+                  pages: "22 صفحہ",
+                  press: () {
+                    gotoBookMark('Daily');
+                  },
+                ),
+                TextHeading("ہفتے", "پڑھیں"),
+                SizedBox(height: 15),
+                for (String key in pdfweekbook.keys)
+                  if (key != 'Daily')
+                    ChapterCard(
+                      name: pdfKeyUrdu[key],
+                      pages: "کل " + pdfbookCount[key]! + " صفحات ",
+                      press: () {
+                        gotoBookMark(key);
+                      },
+                    ),
+                TextHeading("مزید", "پڑھیں"),
                 SizedBox(height: 15),
                 for (String key in pdfOtherbook.keys)
                   ChapterCard(
-                    name: key,
-                    pages: "Total " + pdfbookCount[key]! + " Pages",
+                    name: pdfKeyUrdu[key],
+                    pages: "کل " + pdfbookCount[key]! + " صفحات",
                     press: () {
                       gotoBookMark(key);
                     },
                   ),
+              ]
+
               ],
             ),
           ),

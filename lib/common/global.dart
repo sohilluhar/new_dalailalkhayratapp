@@ -16,7 +16,7 @@ List<BookMark> idxList=<BookMark>[];
 
 Future<void> loadAll() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  horizontalswip=(prefs.getBool('horizontalswip') ?? true);
+  horizontalswip=(prefs.getBool('horizontalswip') ?? false);
   nigthmode=(prefs.getBool('nigthmode') ?? false);
   autospace=(prefs.getBool('autospace') ?? false);
 
