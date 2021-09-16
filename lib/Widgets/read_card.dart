@@ -1,10 +1,12 @@
 import 'package:dalailalkhayratapp/Widgets/two_side_rounded.dart';
 import 'package:dalailalkhayratapp/common/colors.dart';
+import 'package:dalailalkhayratapp/common/global.dart';
 import 'package:flutter/material.dart';
+import 'package:dalailalkhayratapp/common/global.dart';
 
 class CardRead extends StatelessWidget {
   final String? day;
-  final String? buttontext;
+   final String? buttontext;
   final String? chapter;
   final String? pages;
   final GestureTapCallback? press;
@@ -23,6 +25,8 @@ class CardRead extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
+
     return Container(
       margin: EdgeInsets.symmetric(vertical: 15),
       width: double.infinity,
@@ -83,19 +87,39 @@ class CardRead extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: SizedBox(
-                height: 40,
-                width: size.width * .3,
-                child: TwoSideRoundedButton(
-                  text: buttontext,
-                  radious: 24,
-                  press: press,
+
+            if (lang!="Urdu")
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child:
+
+                  SizedBox(
+                    height: 40,
+                    width: size.width * .3,
+                    child: TwoSideRoundedButton(
+                      text: buttontext,
+                      radious: 24,
+                      press: press,
+                    ),
+                  ),
+                ),
+            if (lang=="Urdu")
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child:
+
+                SizedBox(
+                  height: 40,
+                  width: size.width * .3,
+                  child: TwoSideRoundedButton(
+                    text: 'پڑھیں',
+                    radious: 24,
+                    press: press,
+                  ),
                 ),
               ),
-            ),
             Positioned(
               bottom: 50,
               right: 20,

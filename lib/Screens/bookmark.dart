@@ -64,6 +64,7 @@ class _BookmarkListState extends State<BookmarkList> {
                             shrinkWrap: false,
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
+                      if (lang!="Urdu")
                               return ChapterCard(
                                 name: snapshot.data![index].pdfName,
                                 chapterNumber: pdfChapterName[
@@ -80,6 +81,23 @@ class _BookmarkListState extends State<BookmarkList> {
                                   gotoBookMark(snapshot.data![index]);
                                 },
                               );
+                      if (lang=="Urdu")
+                            return ChapterCard(
+                              name:pdfKeyUrdu[ snapshot.data![index].pdfName],
+                              chapterNumber:
+
+                              pdfChapterNameUrdu[snapshot.data![index].pdfName],
+
+                              pages: (snapshot.data![index].pageId+1) .toString()+" مزید ",
+                              // "/"+ pdfChapterName[snapshot.data![index].pdfName]+" ",
+                              delete: () {
+                                deleteBookMark(index);
+                              },
+                              press: () {
+                                gotoBookMark(snapshot.data![index]);
+                              },
+                            );
+                      return SizedBox.shrink();
                             });
                       }
                       return Center(child: CircularProgressIndicator());

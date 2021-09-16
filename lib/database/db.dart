@@ -146,41 +146,41 @@ Map<String,String> pdfChapterName={
 
 
 Map<String,String> pdfChapterNameUrdu={
-  'Index':'Index',
-  'Daily':'Daily',
-  'Start Dua':'Dua',
+  'Index':'فہرست',
+  'Daily':'روزانہ',
+  'Start Dua':'دعائے افتتاح',
 
-  'Monday':'آپ کسی ہے',
-  'Tuesday':'آپ کسی ہے',
-  'Wednesday':'آپ کسی ہے' ,
-  'Thursday':'Manzil Chaharam',
-  'Friday':'Manzil Chaharam',
-  'Saturday':'Manzil Shashum',
-  'Sunday':'آپ کسی ہے',
+  'Monday':'الحزب الاول',
+  'Tuesday':'الحزب الثانی',
+  'Wednesday':'الحزب الثالث' ,
+  'Thursday':'الحزب الرابع',
+  'Friday':'الحزب الخامس',
+  'Saturday':'الحزب السادس',
+  'Sunday':'الحزب السابع',
 
-  'End Dua':'Dua',
+  'End Dua':'دعائے اختتام',
 
-  'Raza E Noorie (Arji)':'Raza E Noorie (Arji)',
-  'Durood Mishkat sharif':'Durood Mishkat sharif',
-  'Alwazifatal karim':'Alwazifatal karima',
-  'Benazir Amsal':'Benazir Amsal',
-  'Fazaile Durood E Razviya':'Fazaile Durood E Razviya',
+  'Raza E Noorie (Arji)':'رضویہ نوریہ',
+  'Durood Mishkat sharif':'درود مستغاث شریف',
+  'Alwazifatal karim':'الوظیفتہ الکریمہ',
+  'Benazir Amsal':'بے نظیر عمل',
+  'Fazaile Durood E Razviya':'درود رضویہ مع  فضائل',
 
+  'Index0':'فہرست',
 
-  'Index0':'Fehrist',
-  'Index1':'Taqdeem',
-  'Index2':'Padhne ka Tareeqa',
-  'Index3':'Musannif ki Mukhtasar',
-  'Index4':'Ijaazat Nama',
-  'Index5':'Fazaaile Salaat',
-  'Index5':'Safatual Roza',
+  'Index1':'تقدیم',
+  'Index2':'پڑھنے کا طریقہ',
+  'Index3':'مصنف کے مختصر سوانح حیات',
+  'Index4':'اجازت نامہ',
+  'Index5':'فضائل صلوۃ',
+  'Index5':'صفتہ الروضہ',
 
 };
 
 Map<String,String> pdfKeyUrdu={
-  'Index':'Index',
-  'Daily':'Daily',
-  'Start Dua':'Dua',
+  'Index':'فہرست',
+  'Daily':'روزانہ',
+  'Start Dua':'دعائے افتتاح',
 
   'Monday':'پیر',
   'Tuesday':'منگل',
@@ -190,21 +190,26 @@ Map<String,String> pdfKeyUrdu={
   'Saturday':'ہفتہ',
   'Sunday':'اتوار',
 
-  'End Dua':'Dua',
+  'End Dua':'دعائے اختتام',
 
-  'Raza E Noorie (Arji)':'Raza E Noorie (Arji)',
-  'Durood Mishkat sharif':'Durood Mishkat sharif',
-  'Alwazifatal karim':'Alwazifatal karima',
-  'Benazir Amsal':'Benazir Amsal',
-  'Fazaile Durood E Razviya':'Fazaile Durood E Razviya',
+  'Raza E Noorie (Arji)':'رضویہ نوریہ',
+  'Durood Mishkat sharif':'درود مستغاث شریف',
+  'Alwazifatal karim':'الوظیفتہ الکریمہ',
+  'Benazir Amsal':'بے نظیر عمل',
+  'Fazaile Durood E Razviya':'درود رضویہ مع  فضائل',
 
-  'Index0':'Fehrist',
+  'Index0':'فہرست',
 
-  'Index1':'Taqdeem',
-  'Index2':'Padhne ka Tareeqa',
-  'Index3':'Musannif ki Mukhtasar',
-  'Index4':'Ijaazat Nama',
-  'Index5':'Fazaaile Salaat',
-  'Index5':'Safatual Roza',
+  'Index1':'تقدیم',
+  'Index2':'پڑھنے کا طریقہ',
+  'Index3':'مصنف کے مختصر سوانح حیات',
+  'Index4':'اجازت نامہ',
+  'Index5':'فضائل صلوۃ',
+  'Index5':'صفتہ الروضہ',
 
+};
+
+Map<String,String> appname={
+  'Urdu':'دلائل الخیرات',
+  'Eng':'Dala\'il Al Khayrat'
 };

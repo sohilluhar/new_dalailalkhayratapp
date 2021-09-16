@@ -1,5 +1,6 @@
 import 'package:dalailalkhayratapp/Widgets/two_side_rounded.dart';
 import 'package:dalailalkhayratapp/common/colors.dart';
+import 'package:dalailalkhayratapp/common/global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -101,7 +102,7 @@ class ReadingListCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(9),
         ),
         margin: EdgeInsets.only(right: 20, bottom: 10),
-        height: MediaQuery.of(context).size.width * 0.2,
+        height: MediaQuery.of(context).size.width * 0.25,
         width: 200,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,13 +136,30 @@ class ReadingListCard extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
+               if (lang!="Urdu")
                 Container(
                   width: 95,
-                  child: TwoSideRoundedButton(
+                  child:
+
+                  TwoSideRoundedButton(
                     text: "Read Now",
                     press: pressRead,
                   ),
-                )
+
+
+                ),
+
+                if (lang=="Urdu")
+                  Container(
+                    width: 95,
+                    child:
+
+                    TwoSideRoundedButton(
+                      text: "پڑھیں",
+                      press: pressRead,
+                    ),
+                  )
+
               ],
             )
           ],

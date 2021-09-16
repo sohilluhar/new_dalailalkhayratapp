@@ -80,7 +80,7 @@ class _HomeState extends State<Home> {
         physics: BouncingScrollPhysics(),
         slivers: [
           CustomAppBar(
-            title: "Dala'il Al Khayrat",
+            title: appname[lang]!,
             showBack: false,
             actions: [
               IconButton(
@@ -127,8 +127,13 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(height: size.height * 0.03),
+
+              if(lang!="Urdu")
                   TextHeading("Today", "Reading"),
-                  if (lang == "Eng")
+              if(lang=="Urdu")
+                TextHeading("آج", "پڑھیں"),
+
+              if(lang!="Urdu")
                     CardRead(
                         day: today_name,
                         chapter: pdfChapterName[today_name],
@@ -140,40 +145,49 @@ class _HomeState extends State<Home> {
                     CardRead(
                         day: pdfKeyUrdu[today_name],
                         chapter: pdfChapterNameUrdu[today_name],
-                        pages: pdfbookCount[today_name]! + " صفحات ",
+                pages: pdfbookCount[today_name]! + " صفحہ ",
                         press: () {
                           loadFile(today_name);
                         }),
-
+              if(lang!="Urdu")
                   TextHeading("Resume", "Reading"),
+              if(lang=="Urdu")
+                TextHeading("جاری", "پڑھیں"),
+
                   continueReading(size, resumebook, pdfChapterName[resumebook],
                       pdfbookCount[resumebook]),
-                  TextHeading("", "Content"),
-                  CardRead(
-                      day: 'Index',
-                      chapter: "View",
-                      buttontext: "View Content",
-                      pages: "",
-                      press: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => IndexList()),
-                        );
-                      }),
 
-                  // TextHeading("Weekday", "Index"),
-                  // IndexScroll(),
+
+              if(lang!="Urdu")
                   TextHeading("Daily", "Reading"),
+              if(lang=="Urdu")
+              TextHeading("روزانہ", "پڑھیں"),
+              if(lang!="Urdu")
                   CardRead(
                       day: "Daily",
                       chapter: "Daily",
                       pages: "22 Pages",
                       press: () {
-                        loadFile(today_name);
+                    loadFile('Daily');
                       }),
+              if(lang=="Urdu")
+                CardRead(
+                  day: "روزانہ",
+                  chapter: "روزانہ",
+                  pages: "22 صفحہ",
+                  press: () {
+                    loadFile('Daily');
+                  }),
+              if(lang!="Urdu")
                   TextHeading("Weekday", "Reading"),
+              if(lang=="Urdu")
+
+                TextHeading("ہفتے", "پڑھیں"),
                   WeeklyScroll(),
-                  TextHeading("Other", "Reading"),
+              if(lang!="Urdu")
+              TextHeading("More", "Reading"),
+              if(lang=="Urdu")
+                TextHeading("مزید", "پڑھیں"),
                   OtherScroll(),
                 ],
               ),
@@ -191,7 +205,9 @@ class _HomeState extends State<Home> {
         margin: EdgeInsets.symmetric(vertical: 15),
         child: Row(
           children: <Widget>[
-            for (var key in pdfweekbook.keys)
+            for (var key in pdfweekbook.keys)...[
+
+              if(lang!="Urdu" && key!='Daily')
               ReadingListCard(
                 image: "assets/image/0.jpg",
                 title: key,
@@ -200,46 +216,22 @@ class _HomeState extends State<Home> {
                   loadFile(key);
                 },
               ),
+              if (lang=="Urdu" && key!='Daily')
+                ReadingListCard(
+                  image: "assets/image/0.jpg",
+                  title: pdfKeyUrdu[key],
+                  page: pdfbookCount[key]! + " صفحہ ",
+                  pressRead: () {
+                    loadFile(key);
+                  },
+                ),
+            ]
           ],
         ),
       ),
     );
   }
 
-  // Widget IndexScroll() {
-  //   return SingleChildScrollView(
-  //     scrollDirection: Axis.horizontal,
-  //     child: Container(
-  //       margin: EdgeInsets.symmetric(vertical: 15),
-  //       child: Row(
-  //         children: <Widget>[
-  //
-  //           for(var key in pdfIndexbookpgno.keys)
-  //             ReadingListCard(
-  //             image: "assets/image/0.jpg",
-  //             title:pdfIndexbookchname[key],
-  //             page: "",
-  //             pressRead: () {
-  //
-  //               gotoIndex(pdfIndexbookpgno[key]);
-  //             },
-  //           ),
-  //
-  //
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-  //
-  // Future<void> gotoIndex(String? pgno) async {
-  //   await fromAsset('assets/pdf/prebook.pdf', 'prebook.pdf').then((f) {
-  //     Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => PDFScreen(path: f.path,resumeco:int.parse(pgno!) )),
-  //     );
-  //   });
-  // }
 
   Widget OtherScroll() {
     return SingleChildScrollView(
@@ -248,7 +240,8 @@ class _HomeState extends State<Home> {
         margin: EdgeInsets.symmetric(vertical: 15),
         child: Row(
           children: <Widget>[
-            for (var key in pdfOtherbook.keys)
+            for (var key in pdfOtherbook.keys)...[
+              if(lang!="Urdu")
               ReadingListCard(
                 image: "assets/image/0.jpg",
                 title: key,
@@ -257,6 +250,15 @@ class _HomeState extends State<Home> {
                   loadFile(key);
                 },
               ),
+             if (lang=="Urdu")
+              ReadingListCard(
+                image: "assets/image/0.jpg",
+                title: pdfKeyUrdu[key],
+                page: pdfbookCount[key]! + " صفحہ ",
+                pressRead: () {
+                  loadFile(key);
+                },
+              ),]
           ],
         ),
       ),
@@ -270,6 +272,8 @@ class _HomeState extends State<Home> {
       resume = 0;
     else
       resume = resumecount;
+    String keyname=day_name.toString();
+
 
     return GestureDetector(
         onTap: () {
@@ -277,7 +281,7 @@ class _HomeState extends State<Home> {
         },
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 15),
-          height: MediaQuery.of(context).size.width * 0.2,
+          height: MediaQuery.of(context).size.width * 0.25,
           width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,
@@ -302,6 +306,7 @@ class _HomeState extends State<Home> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          if(lang!="Urdu")
                           Text(
                             day_name!,
                             style: TextStyle(
@@ -311,10 +316,22 @@ class _HomeState extends State<Home> {
                                   MediaQuery.of(context).size.width * 0.04,
                             ),
                           ),
+                          if(lang=="Urdu")
+                            Text(
+                              pdfKeyUrdu[day_name]!,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: kPrimaryColor,
+                                fontSize:
+                                MediaQuery.of(context).size.width * 0.04,
+                              ),
+                            ),
+
                           SizedBox(height: 3),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              if(lang!="Urdu")
                               Text(
                                 chapter_name!,
                                 style: TextStyle(
@@ -323,6 +340,16 @@ class _HomeState extends State<Home> {
                                       MediaQuery.of(context).size.width * 0.04,
                                 ),
                               ),
+                              if(lang=="Urdu")
+                                Text(
+                                  pdfChapterNameUrdu[day_name]!,
+                                  style: TextStyle(
+                                    color: kSecondaryColor,
+                                    fontSize:
+                                    MediaQuery.of(context).size.width * 0.04,
+                                  ),
+                                ),
+                              if(lang!="Urdu")
                               Text(
                                 "Page " +
                                     (resume + 1).toString() +
@@ -333,6 +360,17 @@ class _HomeState extends State<Home> {
                                   color: kLightBlackColor,
                                 ),
                               ),
+                              if(lang=="Urdu")
+                                Text(
+                                  "صفحات " +
+                                      (resume + 1).toString() +
+                                      " - " +
+                                      total!,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: kLightBlackColor,
+                                  ),
+                                ),
                             ],
                           ),
                         ],
@@ -343,7 +381,7 @@ class _HomeState extends State<Home> {
                 Container(
                   height: 7,
                   width: size.width *
-                      (int.parse(resume.toString()) / int.parse(total)),
+                      (int.parse(resume.toString()) / int.parse(total!)),
                   decoration: BoxDecoration(
                     color: kPrimaryColor,
                     borderRadius: BorderRadius.circular(7),
